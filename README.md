@@ -4,7 +4,7 @@ A new, isolated 32-bit in-order processor portfolio project for RTL design and d
 
 ## Status
 
-**Milestones 1–6 are documented; the expanded UVM, directed simulation, and bounded formal checks passed in the user's environments.** The three-seed expanded UVM regression passed in Vivado 2026.1 XSIM/UVM 1.2 with 225 retirements per seed, 37/37 instruction bins, 12/12 branch condition/outcome bins, reset and hazard crosses covered, and zero UVM warnings/errors/fatals. The Icarus directed suite and 40-step Yosys 0.52/Z3 formal check also passed per user-provided output. GitHub Actions is configured but has not been run.
+**Milestones 1–6 are documented; expanded UVM, directed simulation, bounded formal checks, and GitHub Actions have passed.** The three-seed expanded UVM regression passed in Vivado 2026.1 XSIM/UVM 1.2 with 225 retirements per seed, 37/37 instruction bins, 12/12 branch condition/outcome bins, reset and hazard crosses covered, and zero UVM warnings/errors/fatals. The Icarus directed suite and 40-step Yosys 0.52/Z3 formal check passed in WSL. GitHub Actions passed on `main` at commit `988bd07`, running the portable directed regression and bounded formal checks.
 
 This repository is isolated from the user's other projects. No other repositories, portfolio, releases, or remote branches have been modified.
 
@@ -51,4 +51,4 @@ The earlier baseline UVM seeds retired 148 instructions and generated only R-typ
 
 ## Formal and CI
 
-`scripts/run_formal.sh` passed through 40 SMT steps with the latest assertions in the user's WSL run. GitHub Actions (`.github/workflows/rtl-regression.yml`) is configured to run the portable Icarus directed tests and formal job on pushes and pull requests, but the hosted workflow remains unverified. See [`docs/milestones.md`](docs/milestones.md) for run evidence and limits.
+`scripts/run_formal.sh` passed through 40 SMT steps with the latest assertions in the user's WSL run. GitHub Actions (`.github/workflows/rtl-regression.yml`) passed on commit `988bd07` and runs the portable Icarus directed tests and formal job on pushes and pull requests. Hosted CI does not run the Vivado-specific UVM suite. See [`docs/milestones.md`](docs/milestones.md) for run evidence and limits.
