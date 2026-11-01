@@ -24,6 +24,6 @@ jobs:
           z3 --version
           yosys-smtbmc --help >/dev/null
       - name: Run directed RTL regression
-        run: ./scripts/run_iverilog.sh
+        run: bash ./scripts/run_iverilog.sh
       - name: Run bounded formal safety checks
-        run: ./scripts/run_formal.sh
+        run: bash ./scripts/run_formal.sh
