@@ -1,0 +1,29 @@
+name: RTL regression
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  simulation-and-formal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install open-source verification tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes iverilog yosys z3
+      - name: Show tool versions
+        run: |
+          iverilog -V | head -n 1
+          yosys -V
+          z3 --version
+          yosys-smtbmc --help >/dev/null
+      - name: Run directed RTL regression
+        run: ./scripts/run_iverilog.sh
+      - name: Run bounded formal safety checks
+        run: ./scripts/run_formal.sh

@@ -1,0 +1,13 @@
+build/
+out/
+*.vcd
+*.fst
+*.wdb
+*.jou
+*.log
+*.pb
+*.wcfg
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
