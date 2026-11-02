@@ -54,7 +54,7 @@ The synthesis console separately lists 1,923 LUT primitives (sum of LUT1 through
 
 For the 10 ns `core_clk` constraint, Vivado reports WNS=6.161 ns and TNS=0 ns, with zero failing endpoints and all user-specified timing constraints met. A reported maximum-delay path has 3.585 ns data-path delay and a 6.161 ns slack. Vivado labels the path type as setup at the slow process corner.
 
-These timing and area figures are from the standalone core synthesis only. The report includes estimated interconnect delay; placement and routing were not run. External instruction/data and control I/O had no board-specific delay constraints or pin assignments in that measurement. Do not present these results as post-route timing, board performance, maximum operating frequency, or silicon measurements. A separate ZCU104 wrapper and implementation flow are documented in `docs/zcu104_demo.md`. The user ran it through bitstream generation; the final post-route timing and utilization reports still need review.
+These timing and area figures are from the standalone core synthesis only. The report includes estimated interconnect delay; placement and routing were not run. External instruction/data and control I/O had no board-specific delay constraints or pin assignments in that measurement. Do not present these results as post-route timing, board performance, maximum operating frequency, or silicon measurements. A separate ZCU104 wrapper and implementation flow are documented below and in `docs/zcu104_demo.md`; its final clock-pin-corrected routed timing estimates and implementation utilization have been reviewed and are summarized separately.
 
 The log notes removal of unused `idex_load_unsigned` and `exmem_load_unsigned` pipeline elements and `regs[0]`; removing the constant-zero register is expected. A floorplanning-quality warning notes that the flattened primitive netlist is not ideal for floorplanning; this did not prevent synthesis and is only relevant if floorplanning is later attempted.
 
@@ -66,11 +66,11 @@ The user's Vivado 2026.1 implementation run for `rv32i_zcu104_top` on `xczu7ev-f
 | Metric | Result |
 |---|---:|
 | Clock target | 8.000 ns (125 MHz) |
-| Setup WNS / TNS | 3.887 ns / 0 ns |
-| Hold WPWS / TPWS | 3.725 ns / 0 ns |
+| Final clock-pin-corrected router estimate: setup WNS / TNS | 3.777 ns / 0 ns |
+| Final clock-pin-corrected router estimate: hold WHS / THS | 0.021 ns / 0 ns |
 | CLB LUTs | 760 (0.33%) |
 | CLB registers | 1,088 (0.24%) |
 | CARRY8 / F7 / F8 | 22 / 64 / 32 |
 | DRC checks reported | 0 |
 
-The timing summary lists zero failing endpoints and states that the specified timing constraints are met. It also reports one input and four outputs without I/O delay constraints. Therefore this is the routed result for the constrained clock paths, not complete external I/O timing signoff. No board programming or physical measurement has been performed.
+The final router log for the clock-pin-corrected implementation reported zero unrouted nets and the timing estimates listed above. One input and four outputs have no I/O delay constraints, so this is a routed result for the constrained clock paths, not complete external I/O timing signoff. An earlier implementation report showed WNS=3.887 ns and WPWS=3.725 ns; those results are superseded and are not combined with the final router estimates. The user separately programmed the final bitstream and observed the expected LED pattern. The board observation validates basic function; it does not establish silicon timing or performance.

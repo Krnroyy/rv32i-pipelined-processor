@@ -20,7 +20,7 @@ After the word store to address 4, the LEDs display hexadecimal `D` (binary `110
 
 ## ZCU104 constraints
 
-`constraints/zcu104_demo.xdc` uses the device pins from the AMD ZCU104 Evaluation Board User Guide UG1267: `CLK_125_P/N` on H11/G11 at 125 MHz, CPU reset SW20 on M11, and active-high LEDs on D5, D6, A5, and B5. The guide identifies the reset pushbutton as active-high and the LEDs as active-high. See [AMD UG1267, Clock Sources and User I/O](https://docs.amd.com/api/khub/documents/g76en4BfB6qIp2gHDRkQxg/content), Tables 3-12, 3-13, and 3-24.
+`constraints/zcu104_demo.xdc` assigns the board's differential `CLK_125_P/N` clock to F23/E23, respectively, at 125 MHz. These clock package pins were corrected from the earlier H11/G11 values and the corrected design was programmed and checked on the user's ZCU104 HW-Z1 Rev 1.0. CPU reset SW20 is on M11, and the active-high LEDs are on D5, D6, A5, and B5. The reset and LED polarity are documented in [AMD UG1267, Clock Sources and User I/O](https://docs.amd.com/api/khub/documents/g76en4BfB6qIp2gHDRkQxg/content), Tables 3-12, 3-13, and 3-24; use the board schematic for the corrected clock package-pin mapping.
 
 The clock is constrained to 8.000 ns. The reset input is false-pathed because it is asynchronous and passes through the reset synchronizer. No external timing budget is assigned to the LEDs; review unconstrained paths in the implementation timing report. The clock and LED pin mapping must match the user's actual board revision before programming.
 
@@ -46,9 +46,9 @@ From the project root in a Vivado 2026.1 PowerShell prompt:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_vivado_implementation.ps1
 ```
 
-The user ran this flow in Vivado 2026.1. Synthesis, placement, physical optimization, routing, DRC, and bitstream generation completed; Vivado reported zero DRC errors before bitstream generation. The router log reported estimated WNS=3.887 ns, TNS=0 ns, WHS=0.021 ns, and THS=0 ns against the 8 ns clock. The reviewed post-route timing summary reports WNS=3.887 ns and TNS=0 ns on `clk_125`, with zero failing endpoints among 2,696 and WPWS=3.725 ns. The critical max-delay path reports 3.891 ns data-path delay. The utilization report lists 760 CLB LUTs (0.33%), 1,088 CLB registers (0.24%), 22 CARRY8 (0.08%), 64 F7 muxes (0.06%), and 32 F8 muxes (0.06%). The DRC summary reports zero checks.
+The user ran this flow in Vivado 2026.1. Synthesis, placement, physical optimization, routing, DRC, and bitstream generation completed; Vivado reported zero DRC errors before bitstream generation. For the final implementation using the corrected F23/E23 clock pins, the router reported estimated WNS=3.777 ns, TNS=0 ns, WHS=0.021 ns, and THS=0 ns against the 8 ns clock, with zero unrouted nets. An earlier implementation report showed WNS=3.887 ns and WPWS=3.725 ns; those figures are superseded for the final pin-corrected run and should not be combined with its results. The implementation utilization report lists 760 CLB LUTs (0.33%), 1,088 CLB registers (0.24%), 22 CARRY8 (0.08%), 64 F7 muxes (0.06%), and 32 F8 muxes (0.06%). The DRC summary reported zero errors.
 
-The timing report also flags one input and four outputs without I/O delay constraints. CPU reset is false-pathed by design; no external LED timing budget was set. Vivado says the specified clock constraints are met, but these numbers do not constitute complete board I/O timing signoff or silicon measurements. The flow does not program the board, and no physical board run is claimed.
+The timing report also flags one input and four outputs without I/O delay constraints. CPU reset is false-pathed by design; no external LED timing budget was set. Vivado says the specified clock constraints are met, but these numbers do not constitute complete board I/O timing signoff or silicon measurements. The implementation script generates a bitstream but does not program the board; the user programmed the final bitstream separately and observed the expected LED pattern described below.
 
 ## Limits
 

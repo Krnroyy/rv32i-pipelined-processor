@@ -4,7 +4,7 @@ A new, isolated 32-bit in-order processor portfolio project for RTL design and d
 
 ## Status
 
-**The processor and initial verification milestones are complete.** The three-seed expanded UVM regression passed in Vivado 2026.1 XSIM/UVM 1.2 with 225 retirements per seed, 37/37 instruction bins, 12/12 branch condition/outcome bins, reset and hazard crosses covered, and zero UVM warnings/errors/fatals. The workload-specific measured CPI was 1.200, 1.213, and 1.169 for seeds 1, 17, and 20261101 respectively; it excludes reset and empty-pipeline cycles and is not an FPGA or silicon performance result. The Icarus directed suite and 40-step Yosys 0.52/Z3 formal check passed in WSL. GitHub Actions passed on `main` at commit `988bd07`, running the portable directed regression and bounded formal checks.
+**The processor and initial verification milestones are complete.** The three-seed expanded UVM regression passed in Vivado 2026.1 XSIM/UVM 1.2 with 225 retirements per seed, 37/37 instruction bins, 12/12 branch condition/outcome bins, reset and hazard crosses covered, and zero UVM warnings/errors/fatals. The workload-specific measured CPI was 1.200, 1.213, and 1.169 for seeds 1, 17, and 20261101 respectively; it excludes reset and empty-pipeline cycles and is not an FPGA or silicon performance result. The Icarus directed suite and 40-step Yosys 0.52/Z3 formal check passed in WSL. The latest reported GitHub Actions run passed on `main` at commit `fc57f0b` (run `41441716637`), running the portable directed regression and bounded formal checks.
 
 
 | XSIM/UVM seed | Active pipeline cycles | Retired | Load-use stalls | Redirects | Measured CPI |
@@ -15,7 +15,7 @@ A new, isolated 32-bit in-order processor portfolio project for RTL design and d
 
 The synthesis/timing report flow is available in [`scripts/run_vivado_synthesis.ps1`](scripts/run_vivado_synthesis.ps1). It targets the ZCU104 part and a 10 ns clock by default. It reports post-synthesis estimates only; no placement, routing, board I/O constraints, bitstream, or silicon measurements are included. The user ran Vivado 2026.1 synthesis successfully for the default target with zero errors. The utilization report shows 1,688 CLB LUTs (0.73%), 1,610 registers (0.35%), 44 CARRY8, 141 F7 muxes, and no BRAM/DSP use. The synthesized timing summary reports WNS=6.161 ns and TNS=0 ns at 100 MHz, with all specified constraints met. These are post-synthesis estimates; placement/routing and board I/O constraints were not applied.
 
-An optional ZCU104 board demo wraps the core with a small ROM/RAM and LEDs. The user ran the portable Icarus regression: the two prior directed tests passed, and the demo passed in 11 cycles with stored values 12 and 13 and LEDs=`D`. Vivado 2026.1 completed place-and-route and generated a bitstream with zero DRC errors. The reviewed post-route report shows WNS=3.887 ns and TNS=0 ns for the 8 ns (125 MHz) internal clock, with 760 CLB LUTs (0.33%), 1,088 registers (0.24%), 22 CARRY8, 64 F7 muxes, and 32 F8 muxes. The DRC report found zero checks. The timing report has no I/O delay constraints for one input and four outputs, so this is not complete board I/O timing signoff. The board has not been programmed. See [`docs/zcu104_demo.md`](docs/zcu104_demo.md).
+An optional ZCU104 board demo wraps the core with a small ROM/RAM and LEDs. The user ran the portable Icarus regression: the two prior directed tests passed, and the demo passed in 11 cycles with stored values 12 and 13 and LEDs=`D`. Vivado 2026.1 completed place-and-route and generated a bitstream with zero DRC errors. In the final clock-pin-corrected implementation, the router reported estimated WNS=3.777 ns, WHS=0.021 ns, TNS=0 ns, and THS=0 ns against the 8 ns (125 MHz) clock. The reported implementation utilization is 760 CLB LUTs (0.33%), 1,088 registers (0.24%), 22 CARRY8, 64 F7 muxes, and 32 F8 muxes. The user programmed the board and observed the expected LED pattern, `1101` (DS37 off; DS38, DS39, and DS40 on). One input and four outputs have no I/O delay constraints, so this is not complete board I/O timing signoff or a silicon measurement. See [`docs/zcu104_demo.md`](docs/zcu104_demo.md).
 
 This repository is isolated from the user's other projects. No other repositories, portfolio, releases, or remote branches have been modified.
 
@@ -64,7 +64,7 @@ The earlier baseline UVM seeds retired 148 instructions and generated only R-typ
 
 ## Formal and CI
 
-`scripts/run_formal.sh` passed through 40 SMT steps with the latest assertions in the user's WSL run. GitHub Actions (`.github/workflows/rtl-regression.yml`) passed on commit `988bd07` and runs the portable Icarus directed tests and formal job on pushes and pull requests. Hosted CI does not run the Vivado-specific UVM suite. See [`docs/milestones.md`](docs/milestones.md) for run evidence and limits.
+`scripts/run_formal.sh` passed through 40 SMT steps with the latest assertions in the user's WSL run. GitHub Actions (`.github/workflows/rtl-regression.yml`) most recently passed on commit `fc57f0b` (run `41441716637`) and runs the portable Icarus directed tests and formal job on pushes and pull requests. Hosted CI does not run the Vivado-specific UVM suite. See [`docs/milestones.md`](docs/milestones.md) for run evidence and limits.
 
 <!-- ZCU104-HARDWARE-EVIDENCE -->
 
