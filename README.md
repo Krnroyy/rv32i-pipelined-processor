@@ -15,6 +15,8 @@ A new, isolated 32-bit in-order processor portfolio project for RTL design and d
 
 The synthesis/timing report flow is available in [`scripts/run_vivado_synthesis.ps1`](scripts/run_vivado_synthesis.ps1). It targets the ZCU104 part and a 10 ns clock by default. It reports post-synthesis estimates only; no placement, routing, board I/O constraints, bitstream, or silicon measurements are included. The user ran Vivado 2026.1 synthesis successfully for the default target with zero errors. The utilization report shows 1,688 CLB LUTs (0.73%), 1,610 registers (0.35%), 44 CARRY8, 141 F7 muxes, and no BRAM/DSP use. The synthesized timing summary reports WNS=6.161 ns and TNS=0 ns at 100 MHz, with all specified constraints met. These are post-synthesis estimates; placement/routing and board I/O constraints were not applied.
 
+An optional ZCU104 board demo wraps the core with a small ROM/RAM and LEDs. The user ran the portable Icarus regression: the two prior directed tests passed, and the demo passed in 11 cycles with stored values 12 and 13 and LEDs=`D`. Vivado 2026.1 completed place-and-route and generated a bitstream with zero DRC errors. The reviewed post-route report shows WNS=3.887 ns and TNS=0 ns for the 8 ns (125 MHz) internal clock, with 760 CLB LUTs (0.33%), 1,088 registers (0.24%), 22 CARRY8, 64 F7 muxes, and 32 F8 muxes. The DRC report found zero checks. The timing report has no I/O delay constraints for one input and four outputs, so this is not complete board I/O timing signoff. The board has not been programmed. See [`docs/zcu104_demo.md`](docs/zcu104_demo.md).
+
 This repository is isolated from the user's other projects. No other repositories, portfolio, releases, or remote branches have been modified.
 
 ## ISA scope
@@ -28,6 +30,7 @@ The planned core supports 37 RV32I integer instructions: arithmetic/logic, byte/
 - [`docs/milestones.md`](docs/milestones.md): reviewable progress and exit criteria.
 - [`docs/tooling.md`](docs/tooling.md): availability checks for PowerShell and WSL.
 - [`docs/vivado_synthesis.md`](docs/vivado_synthesis.md): reproducible synthesis/timing estimates and their limits.
+- [`docs/zcu104_demo.md`](docs/zcu104_demo.md): board wrapper, demo program, constraints, and run instructions.
 
 ## Tool check commands
 

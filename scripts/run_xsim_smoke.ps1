@@ -11,10 +11,10 @@ foreach ($tool in @('xvlog', 'xelab', 'xsim')) {
 New-Item -ItemType Directory -Force -Path 'build\xsim' | Out-Null
 Push-Location 'build\xsim'
 try {
-    xvlog -sv ..\..\rtl\rv32i_core.sv ..\..\tb\tb_core_smoke.sv ..\..\tb\tb_hazard_control.sv
+    xvlog -sv ..\..\rtl\rv32i_core.sv ..\..\rtl\rv32i_demo_system.sv ..\..\tb\tb_core_smoke.sv ..\..\tb\tb_hazard_control.sv ..\..\tb\tb_rv32i_demo_system.sv
     if ($LASTEXITCODE -ne 0) { throw "xvlog failed with exit code $LASTEXITCODE" }
 
-    foreach ($testName in @('tb_core_smoke', 'tb_hazard_control')) {
+    foreach ($testName in @('tb_core_smoke', 'tb_hazard_control', 'tb_rv32i_demo_system')) {
         $snapshot = "${testName}_sim"
         xelab $testName -s $snapshot
         if ($LASTEXITCODE -ne 0) { throw "xelab failed for $testName with exit code $LASTEXITCODE" }

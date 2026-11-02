@@ -63,6 +63,12 @@ Formal RTL assertions target x0 immutability, reset/memory side-effect gating, r
 
 `scripts/run_vivado_synthesis.ps1` invokes the Vivado Tcl flow for core-only synthesis on the named part and clock target. It saves utilization and timing reports, a clock constraint, run metadata, and a synthesized checkpoint. No measured result is recorded until the user executes the flow. The post-synthesis timing estimate is not a placed/routed result; top-level I/O delays, board routing, bitstream generation, and silicon measurements are outside scope.
 
-## 10. Exit criteria
+## 10. Board demo checks
+
+The standalone system demo executes a fixed ROM program, exercises ALU forwarding and a load-use interlock, stores/loads 12 and then stores 13. Its self-checking testbench verifies both memory words, the LED value `4'hd`, no core stop, and a bounded completion watchdog. Run it in the portable Icarus suite and Vivado XSIM. The board top additionally wraps the differential clock input and synchronizes the active-high reset button before core release. User-run WSL Icarus passed all three tops; the demo checked memory values 12 and 13, LED=`D`, no stop, and completed in 11 cycles. The demo has not yet been run in XSIM or on the physical board.
+
+The user ran the Vivado implementation flow through routing and bitstream generation. Reviewed reports show WNS=3.887 ns, TNS=0 ns, WPWS=3.725 ns, zero failing endpoints, 760 CLB LUTs (0.33%), 1,088 registers (0.24%), 22 CARRY8, 64 F7 muxes, 32 F8 muxes, and zero DRC checks. The timing report identifies one input and four outputs without I/O delay constraints, so only the specified clock paths are reported as met. The bitstream has not been programmed and the physical board has not been tested.
+
+## 11. Exit criteria
 
 Capture actual commands and exit statuses; all supported instructions/directed cases pass the independent scoreboard; mandatory bins hit or justified; zero assertion failures; seeded tests repeat; watchdog passes; formal results state exact depth/assumptions/limits; CI reproduces portable regression from a clean checkout.

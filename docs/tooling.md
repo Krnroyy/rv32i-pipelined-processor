@@ -26,6 +26,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_vivado_synthes
 
 The default target is `xczu7ev-ffvc1156-2-e` (ZCU104) and the clock target is 10 ns (100 MHz). Override them with `-Part`, `-ClockPeriodNs`, or `-ReportDir`; set `-VivadoBin` if Vivado is not on PATH. Output goes under `reports\vivado` and includes utilization, timing, run metadata, clock XDC, and a post-synthesis checkpoint. This flow stops after synthesis: timing is an estimate, top-level memory and control I/O paths have no board delay constraints, and it does not produce placed/routed metrics, a bitstream, or silicon measurements. See `docs/vivado_synthesis.md`.
 
+The optional ZCU104 demo simulation runs with `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_xsim_demo.ps1`. The placed-and-routed flow is `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_vivado_implementation.ps1`; its reports and bitstream are written beneath `reports\implementation`. The flow does not program the board. See `docs/zcu104_demo.md` for verified board pins, memory behavior, output meaning, and limitations.
+
 ## WSL Ubuntu — simulation / formal
 
 ```bash

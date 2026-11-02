@@ -12,3 +12,6 @@ Thumbs.db
 *.swp
 *.bak
 /reports/vivado/
+/reports/implementation/
+.Xil/
+clockInfo.txt
