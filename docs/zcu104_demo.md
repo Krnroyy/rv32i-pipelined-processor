@@ -63,8 +63,10 @@ The program is fixed in ROM; there is no software loader, UART, debugger, AXI bu
 - Router-estimated timing: WNS 3.777 ns, WHS 0.021 ns, TNS 0 ns, THS 0 ns. These are implementation estimates.
 
 <!-- ZCU104-BOARD-PHOTOS -->
-### Board photos
 
-![ZCU104 board overview](images/zcu104-board-overview.jpeg)
-![ZCU104 PL LED output](images/zcu104-led-output.jpeg)
+| Board overview | PL LED result |
+|---|---|
+| <img src="images/zcu104-board-overview.jpeg" width="320" alt="ZCU104 board overview"> | <img src="images/zcu104-led-output.jpeg" width="320" alt="ZCU104 PL LED output"> |
+| ZCU104 HW-Z1 Rev 1.0 used for the processor demo. | Expected `1101`: DS37 off; DS38, DS39, and DS40 on. |
+
 <!-- /ZCU104-BOARD-PHOTOS -->
