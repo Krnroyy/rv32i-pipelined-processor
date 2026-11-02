@@ -39,16 +39,30 @@ Use explicit counters/bitmaps in portable tests so Icarus need not support cover
 
 Assert/check: x0 reads zero and is never written; invalid slots never write/register or issue memory; stall holds PC/IF-ID and inserts ID/EX bubble; forwarding selects youngest matching producer and never treats a load address as data; redirect flushes younger slots; wrong path cannot retire or issue memory; misaligned access cannot request memory/write a register; reset gates writes; retirement metadata stays aligned. Exercise assertions in simulation; compile success alone is not evidence.
 
-## 6. Formal plan
+## 6. Performance telemetry
+
+The UVM testbench reports `pipeline_active_cycles`, `retired`, load-use stalls, redirects, and `measured_CPI`. A cycle counts when reset is released and at least one IF/ID, ID/EX, EX/MEM, or MEM/WB valid bit is set. The reported ratio is `pipeline_active_cycles / retired`; reset cycles and empty-pipeline drain cycles are excluded. The current test program and combinational, zero-wait memory model make this a workload-specific simulation metric, not FPGA frequency, silicon throughput, or a general benchmark. The user ran all three fixed seeds in Vivado 2026.1 XSIM/UVM 1.2: each retired 225 instructions with zero UVM warnings/errors/fatals. Measured CPI was 1.200 (270 cycles), 1.213 (273 cycles), and 1.169 (263 cycles) for seeds 1, 17, and 20261101.
+
+| Seed | Active cycles | Retired | Load-use stalls | Redirects | CPI |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 270 | 225 | 7 | 17 | 1.200 |
+| 17 | 273 | 225 | 6 | 19 | 1.213 |
+| 20261101 | 263 | 225 | 6 | 14 | 1.169 |
+
+## 7. Formal plan
 
 Formal RTL assertions target x0 immutability, reset/memory side-effect gating, retirement write legality, load-use hold/bubble, redirect flush/target, forwarding priority, and misaligned-memory-request suppression. The user reran the updated Yosys 0.52/SMTBMC/Z3 flow in WSL; it passed through 40 steps in about 8m28s. There is no architectural equivalence proof, induction proof, liveness proof, or unbounded correctness proof.
 
-## 7. Regression and CI
+## 8. Regression and CI
 
 - Icarus: `scripts/run_iverilog.sh` passed again in the user's WSL environment after the verification expansion. `tb_core_smoke` reported 37 retirements and illegal stop checked; `tb_hazard_control` reported 56 retirements, four load-use stalls, and branch/jump flushes checked. Icarus printed time-unit and constant-select compatibility warnings; both tests printed PASS and the shell continued to the formal run.
 - XSIM baseline: `scripts/run_xsim_uvm.ps1` passed seeds 1, 17, and 20261101 at 148 retirements each. The expanded three-seed run then passed in the user's Vivado 2026.1 XSIM/UVM 1.2 environment: each seed retired 225 instructions, hit ISA=37/37 and branch condition/outcome=12/12, exercised reset and required hazard crosses, and reported zero UVM warnings/errors/fatals. The explicit sign-fill `model_sra` fix resolved the earlier negative-value SRA/SRAI reference-model mismatches. Logs and WDB waveforms are saved per seed by the runner.
 - CI: GitHub Actions installs distro Icarus/Yosys/Z3 and runs the portable directed suite plus bounded formal checks on push/PR. The workflow passed on `main` at commit `988bd07` in 4m29s. Generic hosted runners do not run the Vivado-specific UVM suite; XSIM remains a local regression.
 
-## 8. Exit criteria
+## 9. Synthesis reporting
+
+`scripts/run_vivado_synthesis.ps1` invokes the Vivado Tcl flow for core-only synthesis on the named part and clock target. It saves utilization and timing reports, a clock constraint, run metadata, and a synthesized checkpoint. No measured result is recorded until the user executes the flow. The post-synthesis timing estimate is not a placed/routed result; top-level I/O delays, board routing, bitstream generation, and silicon measurements are outside scope.
+
+## 10. Exit criteria
 
 Capture actual commands and exit statuses; all supported instructions/directed cases pass the independent scoreboard; mandatory bins hit or justified; zero assertion failures; seeded tests repeat; watchdog passes; formal results state exact depth/assumptions/limits; CI reproduces portable regression from a clean checkout.

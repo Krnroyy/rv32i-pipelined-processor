@@ -4,7 +4,16 @@ A new, isolated 32-bit in-order processor portfolio project for RTL design and d
 
 ## Status
 
-**Milestones 1–6 are documented; expanded UVM, directed simulation, bounded formal checks, and GitHub Actions have passed.** The three-seed expanded UVM regression passed in Vivado 2026.1 XSIM/UVM 1.2 with 225 retirements per seed, 37/37 instruction bins, 12/12 branch condition/outcome bins, reset and hazard crosses covered, and zero UVM warnings/errors/fatals. The Icarus directed suite and 40-step Yosys 0.52/Z3 formal check passed in WSL. GitHub Actions passed on `main` at commit `988bd07`, running the portable directed regression and bounded formal checks.
+**The processor and initial verification milestones are complete.** The three-seed expanded UVM regression passed in Vivado 2026.1 XSIM/UVM 1.2 with 225 retirements per seed, 37/37 instruction bins, 12/12 branch condition/outcome bins, reset and hazard crosses covered, and zero UVM warnings/errors/fatals. The workload-specific measured CPI was 1.200, 1.213, and 1.169 for seeds 1, 17, and 20261101 respectively; it excludes reset and empty-pipeline cycles and is not an FPGA or silicon performance result. The Icarus directed suite and 40-step Yosys 0.52/Z3 formal check passed in WSL. GitHub Actions passed on `main` at commit `988bd07`, running the portable directed regression and bounded formal checks.
+
+
+| XSIM/UVM seed | Active pipeline cycles | Retired | Load-use stalls | Redirects | Measured CPI |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 270 | 225 | 7 | 17 | 1.200 |
+| 17 | 273 | 225 | 6 | 19 | 1.213 |
+| 20261101 | 263 | 225 | 6 | 14 | 1.169 |
+
+The synthesis/timing report flow is available in [`scripts/run_vivado_synthesis.ps1`](scripts/run_vivado_synthesis.ps1). It targets the ZCU104 part and a 10 ns clock by default. It reports post-synthesis estimates only; no placement, routing, board I/O constraints, bitstream, or silicon measurements are included. The user ran Vivado 2026.1 synthesis successfully for the default target with zero errors. The utilization report shows 1,688 CLB LUTs (0.73%), 1,610 registers (0.35%), 44 CARRY8, 141 F7 muxes, and no BRAM/DSP use. The synthesized timing summary reports WNS=6.161 ns and TNS=0 ns at 100 MHz, with all specified constraints met. These are post-synthesis estimates; placement/routing and board I/O constraints were not applied.
 
 This repository is isolated from the user's other projects. No other repositories, portfolio, releases, or remote branches have been modified.
 
@@ -18,6 +27,7 @@ The planned core supports 37 RV32I integer instructions: arithmetic/logic, byte/
 - [`docs/test_plan.md`](docs/test_plan.md): reference model, scoreboard, directed/random tests, assertions, coverage, formal, and CI.
 - [`docs/milestones.md`](docs/milestones.md): reviewable progress and exit criteria.
 - [`docs/tooling.md`](docs/tooling.md): availability checks for PowerShell and WSL.
+- [`docs/vivado_synthesis.md`](docs/vivado_synthesis.md): reproducible synthesis/timing estimates and their limits.
 
 ## Tool check commands
 

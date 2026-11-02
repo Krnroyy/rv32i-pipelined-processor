@@ -623,6 +623,7 @@ package rv32i_uvm_pkg;
             rv32i_random_sequence seq;
             uvm_report_server report_server;
             int isa_bins, branch_bins;
+            real measured_cpi;
             phase.raise_objection(this);
             seq=rv32i_random_sequence::type_id::create("seq");
             seq.start(env.agent.sequencer);
@@ -671,6 +672,10 @@ package rv32i_uvm_pkg;
                     else `uvm_error("BRANCH_COVER",$sformatf("Branch condition %0d outcome %0d was not hit",branch,outcome))
                 end
             `uvm_info("COVER",$sformatf("retired=%0d ISA=%0d/37 branch_condition_outcomes=%0d/12 R/I/L/S/B/J=%0d/%0d/%0d/%0d/%0d/%0d stalls=%0d reset=%0d branch_fwd(T/U)=%0d/%0d branch_no_fwd(T/U)=%0d/%0d class_fwd(R/I/L/S/B/J)=%0d/%0d/%0d/%0d/%0d/%0d class_stall(R/I/L/S/B/J)=%0d/%0d/%0d/%0d/%0d/%0d fwd_exmem(A/B)=%0d/%0d fwd_memwb(A/B)=%0d/%0d redirects=%0d",env.scoreboard.retire_count,isa_bins,branch_bins,env.scoreboard.class_count[0],env.scoreboard.class_count[1],env.scoreboard.class_count[2],env.scoreboard.class_count[3],env.scoreboard.class_count[4],env.scoreboard.class_count[5],vif.observed_stalls,vif.observed_midrun_resets,vif.branch_fwd_taken,vif.branch_fwd_untaken,vif.branch_no_fwd_taken,vif.branch_no_fwd_untaken,vif.class_forward_count[0],vif.class_forward_count[1],vif.class_forward_count[2],vif.class_forward_count[3],vif.class_forward_count[4],vif.class_forward_count[5],vif.class_stall_count[0],vif.class_stall_count[1],vif.class_stall_count[2],vif.class_stall_count[3],vif.class_stall_count[4],vif.class_stall_count[5],vif.forward_exmem_a,vif.forward_exmem_b,vif.forward_memwb_a,vif.forward_memwb_b,vif.observed_redirects),UVM_LOW)
+            measured_cpi=0.0;
+            if (env.scoreboard.retire_count != 0)
+                measured_cpi=(1.0*vif.observed_pipeline_cycles)/env.scoreboard.retire_count;
+            `uvm_info("PERF",$sformatf("pipeline_active_cycles=%0d retired=%0d load_use_stalls=%0d redirects=%0d measured_CPI=%0.3f (reset and empty-pipeline cycles excluded)",vif.observed_pipeline_cycles,env.scoreboard.retire_count,vif.observed_stalls,vif.observed_redirects,measured_cpi),UVM_LOW)
             report_server=uvm_report_server::get_server();
             if (report_server.get_severity_count(UVM_ERROR)==0 && report_server.get_severity_count(UVM_FATAL)==0)
                 $display("PASS: UVM reference scoreboard; %0d instructions retired",env.scoreboard.retire_count);

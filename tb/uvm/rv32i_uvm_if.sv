@@ -19,6 +19,7 @@ interface rv32i_uvm_if(input wire clk);
     logic [7:0] dmem [0:4095];
     integer byte_base;
     int unsigned observed_write_count;
+    int unsigned observed_pipeline_cycles;
     int unsigned observed_stalls;
     int unsigned forward_exmem_a, forward_exmem_b;
     int unsigned forward_memwb_a, forward_memwb_b;

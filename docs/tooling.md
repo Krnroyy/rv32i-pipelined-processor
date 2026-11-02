@@ -16,6 +16,16 @@ foreach ($name in $names) {
 
 If Vivado commands are not on PATH, use the Vivado 2026.1 command prompt/settings before retrying. Confirm the UVM 1.2 library path and compile a smoke test before relying on UVM features.
 
+### Synthesis and timing estimate
+
+From the project root in PowerShell:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_vivado_synthesis.ps1
+```
+
+The default target is `xczu7ev-ffvc1156-2-e` (ZCU104) and the clock target is 10 ns (100 MHz). Override them with `-Part`, `-ClockPeriodNs`, or `-ReportDir`; set `-VivadoBin` if Vivado is not on PATH. Output goes under `reports\vivado` and includes utilization, timing, run metadata, clock XDC, and a post-synthesis checkpoint. This flow stops after synthesis: timing is an estimate, top-level memory and control I/O paths have no board delay constraints, and it does not produce placed/routed metrics, a bitstream, or silicon measurements. See `docs/vivado_synthesis.md`.
+
 ## WSL Ubuntu — simulation / formal
 
 ```bash
@@ -37,4 +47,4 @@ At Milestone 5, `iverilog`, `vvp`, `yosys`, `yosys-smtbmc`, `z3`, `sby`, `verila
 
 ## User-run WSL evidence
 
-The user ran the updated `bash scripts/run_iverilog.sh` from the expanded project folder. Both directed tests printed PASS; Icarus emitted time-unit and constant-select compatibility warnings. The user then ran `bash scripts/run_formal.sh` with Yosys 0.52 and Z3; SMTBMC reported `Status: PASSED` at 40 steps in approximately 8 minutes 44 seconds, including the forwarding-priority and memory-alignment assertions. The user also ran the expanded three-seed UVM suite in Vivado 2026.1 XSIM/UVM 1.2; all seeds passed with 225 retirements, 37/37 ISA bins, 12/12 branch outcome bins, reset/hazard crosses exercised, and zero UVM warnings/errors/fatals. Finally, the hosted GitHub Actions `RTL regression` workflow passed on commit `988bd07` in 4m29s. These are results from the user's environments, not reruns in this workspace.
+The user ran the updated `bash scripts/run_iverilog.sh` from the expanded project folder. Both directed tests printed PASS; Icarus emitted time-unit and constant-select compatibility warnings. The user then ran `bash scripts/run_formal.sh` with Yosys 0.52 and Z3; SMTBMC reported `Status: PASSED` at 40 steps in approximately 8 minutes 44 seconds, including the forwarding-priority and memory-alignment assertions. The user also ran the expanded three-seed UVM suite in Vivado 2026.1 XSIM/UVM 1.2; all seeds passed with 225 retirements, 37/37 ISA bins, 12/12 branch outcome bins, reset/hazard crosses exercised, and zero UVM warnings/errors/fatals. The added workload-specific CPI report showed 1.200, 1.213, and 1.169 for seeds 1, 17, and 20261101. Finally, the hosted GitHub Actions `RTL regression` workflow passed on commit `988bd07` in 4m29s. These are results from the user's environments, not reruns in this workspace.

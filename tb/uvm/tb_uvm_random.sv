@@ -87,6 +87,8 @@ module tb_uvm_random;
         stall_seen = 1'b0;
         redirect_seen = 1'b0;
         if (vif.rst_n) begin
+            if (dut.ifid_valid || dut.idex_valid || dut.exmem_valid || dut.memwb_valid)
+                vif.observed_pipeline_cycles++;
             if (dut.regs[0] !== 32'b0) $fatal(1,"ASSERT: x0 is not held at zero");
             if (vif.dmem_write && (!dut.exmem_valid || !dut.exmem_memwrite))
                 $fatal(1,"ASSERT: data write without a valid store slot");
@@ -157,6 +159,7 @@ module tb_uvm_random;
         for (int i=0;i<256;i++) vif.imem[i]=32'h0000_0013;
         for (int j=0;j<4096;j++) vif.dmem[j]=0;
         vif.observed_write_count=0;
+        vif.observed_pipeline_cycles=0;
         vif.observed_midrun_resets=0;
         vif.observed_stalls=0;
         vif.forward_exmem_a=0; vif.forward_exmem_b=0;
