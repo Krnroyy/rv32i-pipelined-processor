@@ -57,7 +57,7 @@ Formal RTL assertions target x0 immutability, reset/memory side-effect gating, r
 
 - Icarus: `scripts/run_iverilog.sh` passed again in the user's WSL environment after the verification expansion. `tb_core_smoke` reported 37 retirements and illegal stop checked; `tb_hazard_control` reported 56 retirements, four load-use stalls, and branch/jump flushes checked. Icarus printed time-unit and constant-select compatibility warnings; both tests printed PASS and the shell continued to the formal run.
 - XSIM baseline: `scripts/run_xsim_uvm.ps1` passed seeds 1, 17, and 20261101 at 148 retirements each. The expanded three-seed run then passed in the user's Vivado 2026.1 XSIM/UVM 1.2 environment: each seed retired 225 instructions, hit ISA=37/37 and branch condition/outcome=12/12, exercised reset and required hazard crosses, and reported zero UVM warnings/errors/fatals. The explicit sign-fill `model_sra` fix resolved the earlier negative-value SRA/SRAI reference-model mismatches. Logs and WDB waveforms are saved per seed by the runner.
-- CI: GitHub Actions installs distro Icarus/Yosys/Z3 and runs the portable directed suite plus bounded formal checks on push/PR. The latest reported workflow passed on `main` at commit `fc57f0b` (run `41441716637`, 9m26s). Generic hosted runners do not run the Vivado-specific UVM suite; XSIM remains a local regression.
+- CI: GitHub Actions installs distro Icarus/Yosys/Z3 and runs the portable directed suite plus bounded formal checks on push/PR. The latest reported workflow passed on `main` at commit `b1ebce0` (run `41454031684`, 9m26s). Generic hosted runners do not run the Vivado-specific UVM suite; XSIM remains a local regression.
 
 ## 9. Synthesis reporting
 

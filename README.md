@@ -4,7 +4,7 @@ A new, isolated 32-bit in-order processor portfolio project for RTL design and d
 
 ## Status
 
-**The processor and initial verification milestones are complete.** The three-seed expanded UVM regression passed in Vivado 2026.1 XSIM/UVM 1.2 with 225 retirements per seed, 37/37 instruction bins, 12/12 branch condition/outcome bins, reset and hazard crosses covered, and zero UVM warnings/errors/fatals. The workload-specific measured CPI was 1.200, 1.213, and 1.169 for seeds 1, 17, and 20261101 respectively; it excludes reset and empty-pipeline cycles and is not an FPGA or silicon performance result. The Icarus directed suite and 40-step Yosys 0.52/Z3 formal check passed in WSL. The latest reported GitHub Actions run passed on `main` at commit `fc57f0b` (run `41441716637`), running the portable directed regression and bounded formal checks.
+**The processor and initial verification milestones are complete.** The three-seed expanded UVM regression passed in Vivado 2026.1 XSIM/UVM 1.2 with 225 retirements per seed, 37/37 instruction bins, 12/12 branch condition/outcome bins, reset and hazard crosses covered, and zero UVM warnings/errors/fatals. The workload-specific measured CPI was 1.200, 1.213, and 1.169 for seeds 1, 17, and 20261101 respectively; it excludes reset and empty-pipeline cycles and is not an FPGA or silicon performance result. The Icarus directed suite and 40-step Yosys 0.52/Z3 formal check passed in WSL. The latest reported GitHub Actions run passed on `main` at commit `b1ebce0` (run `41454031684`), running the portable directed regression and bounded formal checks.
 
 
 | XSIM/UVM seed | Active pipeline cycles | Retired | Load-use stalls | Redirects | Measured CPI |
@@ -64,7 +64,7 @@ The earlier baseline UVM seeds retired 148 instructions and generated only R-typ
 
 ## Formal and CI
 
-`scripts/run_formal.sh` passed through 40 SMT steps with the latest assertions in the user's WSL run. GitHub Actions (`.github/workflows/rtl-regression.yml`) most recently passed on commit `fc57f0b` (run `41441716637`) and runs the portable Icarus directed tests and formal job on pushes and pull requests. Hosted CI does not run the Vivado-specific UVM suite. See [`docs/milestones.md`](docs/milestones.md) for run evidence and limits.
+`scripts/run_formal.sh` passed through 40 SMT steps with the latest assertions in the user's WSL run. GitHub Actions (`.github/workflows/rtl-regression.yml`) most recently passed on commit `b1ebce0` (run `41454031684`) and runs the portable Icarus directed tests and formal job on pushes and pull requests. Hosted CI does not run the Vivado-specific UVM suite. See [`docs/milestones.md`](docs/milestones.md) for run evidence and limits.
 
 <!-- ZCU104-HARDWARE-EVIDENCE -->
 
