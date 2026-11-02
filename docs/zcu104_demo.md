@@ -53,3 +53,11 @@ The timing report also flags one input and four outputs without I/O delay constr
 ## Limits
 
 The program is fixed in ROM; there is no software loader, UART, debugger, AXI bus, operating system, or general-purpose memory map. The core's simple combinational memory interface limits memory choice and clock timing. This demo is a board wrapper around the existing RV32I subset, not an RV32I compliance claim or production processor system.
+
+## ZCU104 board validation
+
+- Board: ZCU104, programmed with the `rv32i_zcu104_top` bitstream.
+- Clock pins: `clk_125_p` = F23, `clk_125_n` = E23.
+- Observed: DS37 off; DS38, DS39, and DS40 on, matching the expected `1101` output.
+- Vivado 2026.1 implementation: routing completed with zero unrouted nets and zero DRC errors.
+- Router-estimated timing: WNS 3.777 ns, WHS 0.021 ns, TNS 0 ns, THS 0 ns. These are implementation estimates.

@@ -1,6 +1,6 @@
-# ZCU104 PL clock: 125 MHz differential input, per AMD UG1267 Tables 3-12/3-13.
-set_property PACKAGE_PIN H11 [get_ports clk_125_p]
-set_property PACKAGE_PIN G11 [get_ports clk_125_n]
+# ZCU104 PL clock: 125 MHz differential input; board schematic maps CLK_125_P/N to F23/E23.
+set_property PACKAGE_PIN F23 [get_ports clk_125_p]
+set_property PACKAGE_PIN E23 [get_ports clk_125_n]
 set_property IOSTANDARD LVDS [get_ports {clk_125_p clk_125_n}]
 create_clock -name clk_125 -period 8.000 -waveform {0.000 4.000} [get_ports clk_125_p]
 
