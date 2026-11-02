@@ -61,3 +61,10 @@ The program is fixed in ROM; there is no software loader, UART, debugger, AXI bu
 - Observed: DS37 off; DS38, DS39, and DS40 on, matching the expected `1101` output.
 - Vivado 2026.1 implementation: routing completed with zero unrouted nets and zero DRC errors.
 - Router-estimated timing: WNS 3.777 ns, WHS 0.021 ns, TNS 0 ns, THS 0 ns. These are implementation estimates.
+
+<!-- ZCU104-BOARD-PHOTOS -->
+### Board photos
+
+![ZCU104 board overview](images/zcu104-board-overview.jpeg)
+![ZCU104 PL LED output](images/zcu104-led-output.jpeg)
+<!-- /ZCU104-BOARD-PHOTOS -->

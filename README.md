@@ -65,3 +65,12 @@ The earlier baseline UVM seeds retired 148 instructions and generated only R-typ
 ## Formal and CI
 
 `scripts/run_formal.sh` passed through 40 SMT steps with the latest assertions in the user's WSL run. GitHub Actions (`.github/workflows/rtl-regression.yml`) passed on commit `988bd07` and runs the portable Icarus directed tests and formal job on pushes and pull requests. Hosted CI does not run the Vivado-specific UVM suite. See [`docs/milestones.md`](docs/milestones.md) for run evidence and limits.
+
+<!-- ZCU104-HARDWARE-EVIDENCE -->
+## ZCU104 hardware demo
+
+The ZCU104 displayed the expected `1101` LED output: DS37 off, with DS38, DS39, and DS40 on.
+
+![ZCU104 board overview](docs/images/zcu104-board-overview.jpeg)
+![ZCU104 PL LED output](docs/images/zcu104-led-output.jpeg)
+<!-- /ZCU104-HARDWARE-EVIDENCE -->
